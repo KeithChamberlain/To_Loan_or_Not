@@ -357,11 +357,21 @@ if __name__ == '__main__':
 
     fig0=new_vec.value_counts().plot(kind="bar", 
         label="Years Employed", color="blue", alpha=0.5, x=[""])
-    ax.set_xlabel("")
-    plt.show()
+    plt.xlabel("Years Employed", fontsize=25)
+    plt.ylabel("Frequency Ratio", fontsize=25)
+    plt.title("Ratio of Approved Loans", fontsize=30)
+    plt.xticks(ticks=[0,1], labels=["[0, 10)","10+"])
+    #plt.show()
+    plt.savefig("../img/Emp_years_approv.png",dpi=300)
+
     figb=new_vec2.value_counts().plot(kind="bar", label="Amount",
-        color="orange", alpha=0.5)
-    plt.show()
+        color="blue", alpha=0.5)
+    plt.xlabel("Loan Amount",fontsize=25)
+    plt.ylabel("Frequency Ratio",fontsize=25)
+    plt.title("Ratio of Approved Loans", fontsize=30)
+    plt.xticks(ticks=[0,1], labels=["(\$0,\$20k)", "\$20k+"])
+    #plt.show()
+    plt.savefig("../img/Amt_approv.png",dpi=300)
     
 # %%
     # H0: P(a9-)==P(a10+)
@@ -420,5 +430,3 @@ print(np.isnan(rejected["Employment Length"]).sum())
 # print(np.isnan(rejected["Zip Code"]).sum())
 # print(np.isnan(accepted["addr_state"]).count())
 # print(np.isnan(rejected["State"]).count())
-
-# %%
