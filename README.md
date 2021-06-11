@@ -47,7 +47,26 @@ The goal in this EDA was to describe the three columns adequately for hypothesis
 
 Length of employment is a binomial variable - essentially an 11 sided die, with sides representing 0 through 9 years of employment history, and a final side for 10 or more. The histogram of Employment Length looks as follows:
 
-![Histogram of Employment Length](http://github.com/keithchamberlain/To_Loan_or_Not/img/emp_len_bar.png)
+![Histogram of Employment Length](https://raw.githubusercontent.com/KeithChamberlain/To_Loan_or_Not/main/img/emp_len_bar.png)
+
+*Figure 1*: Histogram of employment length by percent illustrates difference in tendency to reject loanees with no job experience and a tendency to prefer loanees with ten or more years of experience. This ten year tendency may be cultural or selection bias from the lender. 
+
+While there appears to be a tendency to reject loans for those without experience, this makes sense. Less clear is whether the summed accepted loans for all categories up to 9 will overpower the category for 10 and above. It seems as though there is a peak at two years, and accepted loans falls off as years increases, where the truncated category at 10+ could be a sum of ever smaller values per year. It looks as though I could have had the hypothesis in the opposite direction.
+
+## EDA of Loan Amount
+
+Loan Amount is theoretically a continuous variable. However, evident from the histogram is that there are sriations at whole numbers where consumers have a stronger tendency to apply for loans at. Take a look at Figure 2. 
+
+![Histogram of Loan Amount](https://raw.githubusercontent.com/KeithChamberlain/To_Loan_or_Not/main/img/loan_amt_hist.png)
+
+*Figure 2*: The density plot of loan amount requested shows a tendency for consumers to apply at $5,000 increments above $10K. 
+
+Figure 2 seems to show a higher density of rejected loans below $10k, which may have made for a more appropriate cutoff than $20k. ALso, the bulk of the density seems to be *below* $20k for both rejected and approved loans, which also sugests I may have selected a poor cutoff with the opposite effect of what was hypothesized.
+
+In order to investigate the two hypothesized groups, the successes (approved loans) at 9 and below were assembled and compared to the approved loans at the category 10+; and the successes (approved loans) at $20k and above were compiled against the successes below $20k to form two groups. 
+
+
+
 
 
 ## Hypothesis Tests
