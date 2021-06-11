@@ -65,11 +65,10 @@ Figure 2 seems to show a higher density of rejected loans below $10k, which may 
 
 In order to investigate the two hypothesized groups, the successes (approved loans) at 9 and below were assembled and compared to the approved loans at the category 10+; and the successes (approved loans) at $20k and above were compiled against the successes below $20k to form two groups. 
 
+# Hypothesis Tests
 
+Binomial plots definitely seem to be trending the opposite directdion from the a-priori hypotheses. See figures 3 & 4. The one-tailed test clearly 
 
-
-
-## Hypothesis Tests
+<img src="https://raw.githubusercontent.com/KeithChamberlain/To_Loan_or_Not/main/img/Emp_years_approv.png" width="400" height="300"><img src="https://raw.githubusercontent.com/KeithChamberlain/To_Loan_or_Not/main/img/Amt_approv.png" width="400" height="300">
 
 A z-test for an approximate test betwen two population proportions was conducted between each of two groups. Each group was tallied, receiving a 1 if approved for a loan, and a zero if rejected. 
-
