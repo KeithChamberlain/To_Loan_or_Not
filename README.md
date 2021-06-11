@@ -32,12 +32,11 @@ Of the above features between both datasets, I was drawn to Amount, Years Employ
 
 ## Hypotheses: [Before going further]
 
-I hypothesize that (1) Loan amount requested for $20k and above will be approved significantly more often than for $20k and below. The basis for this belief is that not only will $20k loans be viewed as more lucrative, people requesting those loans will tend to have more assests available in the event of default and would tend to have larger work histories, thereby being older and more mature with spending. Thus, it is expected that these types of loans will be viewed as more attractive to lenders than loans below $20k. The null hypothesis is that there is no difference between the approval rates of $20k and above loans and below $20k loans. 
+I hypothesize that (1) Loan amount requested for $20k and above will be approved significantly differently than for $20k and below. The null hypothesis is that lendees will have the same proportion of approved loans regardless of whether they reqeusted loans in the $20k and above category or below $20k category.
 
-In addition, I hypothesize that (2) lendees with 10 or more years of employment, will, on average, tend to have more loans approved than lendees with less than 10 years of employment history, following similar logic stated earlier. The null hypothesis is that there is no difference between those with ten or more years of employment history and those with less in their frequency of loan approvals. 
+In addition, I hypothesize that (2) lendees with 10 or more years of employment, will, on average, tend to have a significanty different number of loans approved than lendees with less than 10 years of employment history. The null hypothesis is that there is no difference between those with ten or more years of employment history and those with less in their frequency of loan approvals. 
 
-Finally, DTIR should be directly related with loan rejections. Specifically, I hypothesize that a DTIR of 0.3 or less will be significantly related to higher loan
-approvals than the group with higher than 0.3 DTIR. This belief comes from personal experience with renters, where I have heard of renters who prefer rent not to be greater than a third of ones income in order to qualify someone for a lease. 0.3 is close to that value and may separate groups adequately for loans from Lending Club. Next, exploratory data analysis (EDA) was conducted.
+Finally, DTIR should be directly related with loan rejections. Specifically, I hypothesize that a DTIR of 0.3 or less will have significantly different proportion of loan approvals than the group with higher than 0.3 DTIR. The null hypothesis here is that the 0.3% and below group will not be statistically different from the greater than 0.3% DTIR group in loan approvals. 
 
 # Exploratory Analyses
 
@@ -51,7 +50,7 @@ Length of employment is a binomial variable - essentially an 11 sided die, with 
 
 *Figure 1*: Histogram of employment length by percent illustrates difference in tendency to reject loanees with no job experience and a tendency to prefer loanees with ten or more years of experience. This ten year tendency may be cultural or selection bias from the lender. 
 
-While there appears to be a tendency to reject loans for those without experience, this makes sense. Less clear is whether the summed accepted loans for all categories up to 9 will overpower the category for 10 and above. It seems as though there is a peak at two years, and accepted loans falls off as years increases, where the truncated category at 10+ could be a sum of ever smaller values per year. It looks as though I could have had the hypothesis in the opposite direction.
+While there appears to be a tendency to reject loans for those without experience, this makes sense. Less clear is whether the summed accepted loans for all categories up to 9 will overpower the category for 10 and above. It seems as though there is a peak at two years, and accepted loans falls off as years increases, where the truncated category at 10+ could be a sum of ever smaller values per year.
 
 ## EDA of Loan Amount
 
@@ -61,14 +60,22 @@ Loan Amount is theoretically a continuous variable. However, evident from the hi
 
 *Figure 2*: The density plot of loan amount requested shows a tendency for consumers to apply at $5,000 increments above $10K. 
 
-Figure 2 seems to show a higher density of rejected loans below $10k, which may have made for a more appropriate cutoff than $20k. ALso, the bulk of the density seems to be *below* $20k for both rejected and approved loans, which also sugests I may have selected a poor cutoff with the opposite effect of what was hypothesized.
+Figure 2 seems to show a higher density of rejected loans below $10k. ALso, the bulk of the density seems to be *below* $20k for both rejected and approved loans.
 
 In order to investigate the two hypothesized groups, the successes (approved loans) at 9 and below were assembled and compared to the approved loans at the category 10+; and the successes (approved loans) at $20k and above were compiled against the successes below $20k to form two groups. 
 
 # Hypothesis Tests
 
-Binomial plots definitely seem to be trending the opposite directdion from the a-priori hypotheses. See figures 3 & 4. The one-tailed test clearly 
+Binomial plots definitely seem to be trending differently from each other and may be significantly different. See figures 3 & 4.
 
 <img src="https://raw.githubusercontent.com/KeithChamberlain/To_Loan_or_Not/main/img/Emp_years_approv.png" width="400" height="300"><img src="https://raw.githubusercontent.com/KeithChamberlain/To_Loan_or_Not/main/img/Amt_approv.png" width="400" height="300">
 
-A z-test for an approximate test betwen two population proportions was conducted between each of two groups. Each group was tallied, receiving a 1 if approved for a loan, and a zero if rejected. 
+Each group was tallied, receiving a 1 if approved for a loan, and a zero if rejected for a loan. A Welch two sample t-test was conducted over a z-test due to not knowing the population variance. 
+
+For work history, the t-value for the difference in proportions is 605.41, with a p-value 0f 0.0. The p-value is smaller than the a-priori chosen critical alpha value of 0.01 so we reject the null hypothesis that the group with a work history of 10 or more years is the same as the group with a work history of less than 10 years, in favor of the hypothesis that the groups are different. The figure shows the direction of the effect.
+
+For Loan Amount, the t-value for the difference in proportions is 952.84, with a p-value of 0.0. The p-value is smaller than the a-priori chosen critical alpha value of 0.01 so we reject the null hypothesis that the group that applied for loans of $20k or more is the same as the grouop that appied for loans of less than $20k, in favor of the hypothesis that the groups are different. The figure shows the direction of the effect.
+
+# Conclusion
+
+These particular cutoffs may be useful as features in machine learning models down the road, or to inform financial analysts further in loan approval decisions. One problem with these data for loan amount is the striations. There is more probability for a loan to fall on multiples of $5k values than other values. This may have an impact on the validity of the anaysis.
