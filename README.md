@@ -28,14 +28,26 @@ The common columns between the two datasets are as follows:
 
 Table 2: Shared features between the datasets and potential targets of analysis.
 
+Of the above features between both datasets, I was drawn to Amount, Years Employed, and Debt-to-Income Ratio (DTIR). 
+
 ## Hypotheses: [Before going further]
 
-I hypothesize that (1). Loan amount requested for $20k and above will be approved significantly more often than for $20k and below. The basis for this belief is that not only will $20k loans be viewed as more lucrative, people requesting those loans will tend to have more assests available in the event of default and would tend to have larger work histories, thereby being older and more mature with spending. Thus, it is expected that these types of loans will be viewed as more attractive to lenders than loans below $20k. The null hypothesis is that there is no difference between the approval rates of $20k and above loans and below $20k loans. 
+I hypothesize that (1) Loan amount requested for $20k and above will be approved significantly more often than for $20k and below. The basis for this belief is that not only will $20k loans be viewed as more lucrative, people requesting those loans will tend to have more assests available in the event of default and would tend to have larger work histories, thereby being older and more mature with spending. Thus, it is expected that these types of loans will be viewed as more attractive to lenders than loans below $20k. The null hypothesis is that there is no difference between the approval rates of $20k and above loans and below $20k loans. 
 
-In addition, I hypothesize that (2). lendees with 10 or more years of employment, will, on average, tend to have more loans approved than lendees with less than 10 years of employment history, following similar logic stated earlier. The null hypothesis is that there is no difference between those with ten or more years of employment history and those with less in their frequency of loan approvals. 
+In addition, I hypothesize that (2) lendees with 10 or more years of employment, will, on average, tend to have more loans approved than lendees with less than 10 years of employment history, following similar logic stated earlier. The null hypothesis is that there is no difference between those with ten or more years of employment history and those with less in their frequency of loan approvals. 
 
-## Exploratory Analyses
+Finally, DTIR should be directly related with loan rejections. Specifically, I hypothesize that a DTIR of 0.3 or less will be significantly related to higher loan
+approvals than the group with higher than 0.3 DTIR. This belief comes from personal experience with renters, where I have heard of renters who prefer rent not to be greater than a third of ones income in order to qualify someone for a lease. 0.3 is close to that value and may separate groups adequately for loans from Lending Club. Next, exploratory data analysis (EDA) was conducted.
 
+# Exploratory Analyses
+
+The goal in this EDA was to describe the three columns adequately for hypothesis testing, in order to draw conclusions from data. During EDA, it was discovered that DTIR was partially truncated at -1, and 100%, and the rejected loans dataset is tailing heavily to the right, with ~4% of the data above 100%, ~4.8% of the data truncated right at 100%, and roughky 5% of the data truncated at -1. Approximatelly 86% of data are between 0 inclusive to 100% non inclusive. The data dictionary failed to explain what those truncated values and values above the right partial truncation meant, so these data were avoided in further analysis. Thus, hypothesis 3 was not addressed in this analysis given that ~14% of data for rejected loans would have to be thrown out. 
+
+## EDA of Length of Employment 
+
+Length of employment is a binomial variable - essentially an 11 sided die, with sides representing 0 through 9 years of employment history, and a final side for 10 or more. The histogram of Employment Length looks as follows:
+
+![Histogram of Employment Length](http://github.com/keithchamberlain/To_Loan_or_Not/img/emp_len_bar.png)
 
 
 ## Hypothesis Tests
