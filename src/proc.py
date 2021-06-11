@@ -407,3 +407,18 @@ if __name__ == '__main__':
     '''
     print(string)
 # %%
+print(np.isnan(accepted["loan_amnt"]).sum())
+print(np.isnan(rejected["Amount Requested"]).sum())
+print(np.isnan(accepted["fico_range_low"]).sum())
+print(np.isnan(accepted["fico_range_high"]).sum())
+print(np.isnan(rejected["Risk_Score"]).sum())
+print(np.isnan(accepted["dti"]).sum())
+print(np.isnan(rejected["Debt-To-Income Ratio"]).sum())
+print(np.isnan(accepted["emp_length"]).sum())
+print(np.isnan(rejected["Employment Length"]).sum())
+# print(np.isnan(accepted["zip_code"]).sum())
+# print(np.isnan(rejected["Zip Code"]).sum())
+# print(np.isnan(accepted["addr_state"]).count())
+# print(np.isnan(rejected["State"]).count())
+
+# %%
