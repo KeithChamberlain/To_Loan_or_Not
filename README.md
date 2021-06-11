@@ -2,7 +2,8 @@
 
 [Lending Club](https://www.lendingclub.com/) is an online personal loan provider who provided data about rejected and approved loans for developers and lenders to utilize. [Kaggler's]( https://www.kaggle.com/) have also utilized the datasets for competitions. I utilized a Lending Club dataset containing data for [loan approvals and rejections from 2007 through 2018](https://www.kaggle.com/wordsforthewise/lending-club/) provided on Kaggle by Kaggler: *wordsforthewise*, with the [data dictionary](https://www.kaggle.com/jonchan2003/lending-club-data-dictionary) provided by Kaggler: *JonChan2003*. 
 
-These data are interesting for relating rejected and approved loan candidates. If meaningful distinctions can be found between features of rejected and accepted loans, perhaps those features can be used to predict who will be accepted or rejected for loans in the future, enabling one as an investor to make better investing decisions than can be achieved by simply flipping a coin! The first stage is to find meaningfull differences betweeen groups of features. 
+These data are interesting for relating rejected and approved loan candidates. If meaningful distinctions can be found between features of rejected and accepted loans, perhaps those features can be used to predict who will be accepted or rejected for loans in the future, enabling one as an investor to make better investing decisions than can be achieved by simply flipping a coin! The first stage is to find meaningful differences between groups of features. 
+
 
 ## The Data: Broad Overview
 
@@ -32,15 +33,15 @@ Of the above features between both datasets, I was drawn to Amount, Years Employ
 
 ## Hypotheses: [Before going further]
 
-I hypothesize that (1) Loan amount requested for $20k and above will be approved significantly differently than for $20k and below. The null hypothesis is that lendees will have the same proportion of approved loans regardless of whether they reqeusted loans in the $20k and above category or below $20k category.
+I hypothesize that (1) Loan amount requested for $20k and above will be approved significantly differently than for $20k and below. The null hypothesis is that lendees will have the same proportion of approved loans regardless of whether they requested loans in the $20k and above category or below $20k category.
 
-In addition, I hypothesize that (2) lendees with 10 or more years of employment, will, on average, tend to have a significanty different number of loans approved than lendees with less than 10 years of employment history. The null hypothesis is that there is no difference between those with ten or more years of employment history and those with less in their frequency of loan approvals. 
+In addition, I hypothesize that (2) lendees with 10 or more years of employment, will, on average, tend to have a significantly different number of loans approved than lendees with less than 10 years of employment history. The null hypothesis is that there is no difference between those with ten or more years of employment history and those with less in their frequency of loan approvals. 
 
 Finally, DTIR should be directly related with loan rejections. Specifically, I hypothesize that a DTIR of 0.3 or less will have significantly different proportion of loan approvals than the group with higher than 0.3 DTIR. The null hypothesis here is that the 0.3% and below group will not be statistically different from the greater than 0.3% DTIR group in loan approvals. 
 
 # Exploratory Analyses
 
-The goal in this EDA was to describe the three columns adequately for hypothesis testing, in order to draw conclusions from data. During EDA, it was discovered that DTIR was partially truncated at -1, and 100%, and the rejected loans dataset is tailing heavily to the right, with ~4% of the data above 100%, ~4.8% of the data truncated right at 100%, and roughky 5% of the data truncated at -1. Approximatelly 86% of data are between 0 inclusive to 100% non inclusive. The data dictionary failed to explain what those truncated values and values above the right partial truncation meant, so these data were avoided in further analysis. Thus, hypothesis 3 was not addressed in this analysis given that ~14% of data for rejected loans would have to be thrown out. 
+The goal in this EDA was to describe the three columns adequately for hypothesis testing, to draw conclusions from data. During EDA, it was discovered that DTIR was partially truncated at -1, and 100%, and the rejected loans dataset is tailing heavily to the right, with ~4% of the data above 100%, ~4.8% of the data truncated right at 100%, and roughly 5% of the data truncated at -1. Approximately 86% of data are between 0 inclusive to 100% non inclusive. The data dictionary failed to explain what those truncated values and values above the right partial truncation meant, so these data were avoided in further analysis. Thus, hypothesis 3 was not addressed in this analysis given that ~14% of data for rejected loans would have to be thrown out. 
 
 ## EDA of Length of Employment 
 
@@ -54,7 +55,7 @@ While there appears to be a tendency to reject loans for those without experienc
 
 ## EDA of Loan Amount
 
-Loan Amount is theoretically a continuous variable. However, evident from the histogram is that there are sriations at whole numbers where consumers have a stronger tendency to apply for loans at. Take a look at Figure 2. 
+Loan Amount is theoretically a continuous variable. However, evident from the histogram is that there are striations at whole numbers where consumers have a stronger tendency to apply for loans at. Take a look at Figure 2. 
 
 ![Histogram of Loan Amount](https://raw.githubusercontent.com/KeithChamberlain/To_Loan_or_Not/main/img/loan_amt_hist.png)
 
@@ -66,7 +67,7 @@ In order to investigate the two hypothesized groups, the successes (approved loa
 
 # Hypothesis Tests
 
-Binomial plots definitely seem to be trending differently from each other and may be significantly different. See figures 3 & 4.
+Binomial plots seem to be trending differently from each other and may be significantly different. See figures 3 & 4.
 
 <img src="https://raw.githubusercontent.com/KeithChamberlain/To_Loan_or_Not/main/img/Emp_years_approv.png" width="400" height="300"><img src="https://raw.githubusercontent.com/KeithChamberlain/To_Loan_or_Not/main/img/Amt_approv.png" width="400" height="300">
 
@@ -78,4 +79,4 @@ For Loan Amount, the t-value for the difference in proportions is 952.84, with a
 
 # Conclusion
 
-These particular cutoffs may be useful as features in machine learning models down the road, or to inform financial analysts further in loan approval decisions. One problem with these data for loan amount is the striations. There is more probability for a loan to fall on multiples of $5k values than other values. This may have an impact on the validity of the anaysis.
+These particular cutoffs may be useful as features in machine learning models down the road, or to inform financial analysts further in loan approval decisions. One problem with these data for loan amount is the striations. There is more probability for a loan to fall on multiples of $5k values than other values. This may have an impact on the validity of the analysis.
