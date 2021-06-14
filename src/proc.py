@@ -354,28 +354,29 @@ if __name__ == '__main__':
         np.array(LoanReq_gtek[LoanReq_gtek==1]), -.5, .5)
     new_vec = pd.Series(new_vec)
     new_vec2 = pd.Series(new_vec2)
+    plt.show()
+    plt.show()
 
     fig0=new_vec.value_counts().plot(kind="bar", 
         label="Years Employed", color="blue", alpha=0.5, x=[""])
     plt.xlabel("Years Employed", fontsize=25)
     plt.ylabel("Frequency Ratio", fontsize=25)
-    plt.title("Ratio of Approved Loans", fontsize=30)
-    plt.xticks(ticks=[0,1], labels=["[0, 10)","10+"])
-    #plt.show()
+    plt.title("Years Employed", fontsize=30)
+    plt.xticks(ticks=[0,1], labels=["[0, 10)","10\+"])
     plt.savefig("../img/Emp_years_approv.png",dpi=300)
+    plt.show()
+
 
     figb=new_vec2.value_counts().plot(kind="bar", label="Amount",
         color="blue", alpha=0.5)
     plt.xlabel("Loan Amount",fontsize=25)
     plt.ylabel("Frequency Ratio",fontsize=25)
-    plt.title("Ratio of Approved Loans", fontsize=30)
-    plt.xticks(ticks=[0,1], labels=["(\$0,\$20k)", "\$20k+"])
-    #plt.show()
+    plt.title("Loan Amount", fontsize=30)
+    plt.xticks(ticks=[0,1], labels=["(\$0,\$20k)", "\$20k\+"])
     plt.savefig("../img/Amt_approv.png",dpi=300)
-    
+    plt.show()
+
 # %%
-    # H0: P(a9-)==P(a10+)
-    # H1: P(a9-) < P(a10+) because 10+ includes those with 20+ years of work as well.
     '''
     Stating that the null hypothesis for a two sample test of approximate 
     population proportions for Accepted and Rejected Loans between applicants with 
@@ -385,37 +386,46 @@ if __name__ == '__main__':
     more years of employment will have more accepted loans than those with less than
     ten years of employment, on average. 
     '''
-# One sided test 
-    # Number of Accepted Loans 5y experience ~ *Binomial(N, Pn)*
-    # Number of Accepted Loand 5y experience ~~*Normal(N+Pn,sqrt(NPn(1-Pn)))
-    # To compare rates Freq(5y) ~~ Normal(NPn/N, sqrt(NPn(1-Pn)/N^2)))
-    # Diff in sample Freqs(P(5)-P(4) ~~Normal(P5-P4,sqrt(Pn(1-Pn)/N+Pn2(1-Pn2)/N2)))
-    # ~~N(P1-P2, sqrt((Var1/N1+Var2/N2))
-    freqs = np.array(binom_means)/np.array(counts_list)
-    normvars = np.array(binom_vars)/np.array(counts_list)
-
-    nrm = stats.norm(loc=0,
-        scale=np.sqrt( normvars[1] + normvars[0]))
-    p_value = 1-nrm.cdf(x=freqs[0] - freqs[1])
+    bin_means=np,array(bin_means)
+    bin_vars=np.array(bin_vars)
+    counts_list=np,array(counts_list)
+    
+    rndm = stats.norm()
+    t_score0, p0 = stats.ttest_ind(Emp_lty, Emp_gtey, equal_var=False, 
+    nan_policy="omit")
+    print(t_score0, p0)
     string1=f'''
-    The p-value for the mean difference in proportions for 
-    acccepted and rejected loans of {round(freqs[0] - freqs[1],3)} based on length of employment
-    split at 10 years is: {round(p_value, 3)}.
+    The p-value of 0.0 for the difference in proportions given unknown variance
+    of is smaller than the critical value of 0.01, so we reject the null
+    hypothesis that the proportions of approved loans between lendees with an
+    employement history of 10+ years is the same as those with an employemnt 
+    history of less than 10 years in favor of the hypothesis that the groups are
+    different. Specifically, those with less than 10 years of employment history
+    who applied for loans recieved approval significanlty more often than those
+    with 10 or more years of work history.
     '''
     print(string1)
  
 # %%
     
-    nrm2 = stats.norm(loc=freqs[2], 
-        scale=np.sqrt(normvars[2]+normvars[3]))
-    diffc_in_freq=freqs[3]-freqs[2]
-    p_value2 = 1-nrm2.cdf(x=diffc_in_freq)
+    t_score, p = stats.ttest_ind(LoanReq_ltk, LoanReq_gtek, equal_var=False, 
+        nan_policy="omit")
+    print(t_score, p)
 
     string = f'''
-    The p-value for the mean difference in proportions for 
-    accepted and rejected loans of {} split at 20k is: ", {round(p_value2, 3)}.
+    The p-value of 0.0 for the difference in proportions given unknown variance
+    is smaller than the critical value of 0.01, so we reject the null
+    hypothesis that the proportions of approved loans between lendees who 
+    applied for $20k or more of funding, compared to those who applied for less
+    than $20k of funding in favor of the hypothesis that the grouops are 
+    different. Specifically, those who applied for less than $20k in funding 
+    received approval significantly more often.
     '''
     print(string)
+
+#%%
+
+LoanReq_ltk
 # %%
 print(np.isnan(accepted["loan_amnt"]).sum())
 print(np.isnan(rejected["Amount Requested"]).sum())
@@ -430,3 +440,10 @@ print(np.isnan(rejected["Employment Length"]).sum())
 # print(np.isnan(rejected["Zip Code"]).sum())
 # print(np.isnan(accepted["addr_state"]).count())
 # print(np.isnan(rejected["State"]).count())
+
+#%%
+    print(binom_means[1]-binom_means[0])
+    print(binom_means[3]-binom_means[2])
+    
+
+# %%
