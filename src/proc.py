@@ -9,7 +9,11 @@ pd.options.display.max_rows=200
 import os
 import timeit as time
 import matplotlib.pyplot as plt
-import scipy.stats as stats
+
+# In order to correct plotting issue with plt.savefig()
+from matplotlib import rcParams
+rcParams.update({'figure.autolayout': True})
+from scipy import stats
 
 '''
 IO Functions
@@ -175,8 +179,8 @@ def bin_var(Ns, probs):
     return binom_vars
 
 def slow_stack(vector_a, vector_b, a_value, b_value):
-    print(vector_a.unique())
-    print(vector_b.unique())
+    # print(vector_a.unique())
+    # print(vector_b.unique())
     vector_a *= a_value
     vector_b *= b_value
     new_a = vector_a.copy().tolist()
@@ -210,6 +214,12 @@ if __name__ == '__main__':
     skip_sample = 1-rand_sample
     print(f"Using a {rand_sample*100}% random sample of data for EDA.")
     print(f"Skipping a {skip_sample*100}% sample of data for EDA.")
+    
+    '''
+    PLOT PARAMETERS
+    '''
+    pad_inches = 2
+
 
     '''
     FIRST RUN CONDITIONAL
@@ -346,7 +356,7 @@ if __name__ == '__main__':
 
 #%%
     '''
-    Plot Two Group Plots
+    Plot Two Group Plots, just the successes
     '''
     new_vec = slow_stack(np.array(Emp_lty[Emp_lty==1]), 
         np.array(Emp_gtey[Emp_gtey==1]), -.5, .5)
@@ -360,20 +370,20 @@ if __name__ == '__main__':
     fig0=new_vec.value_counts().plot(kind="bar", 
         label="Years Employed", color="blue", alpha=0.5, x=[""])
     plt.xlabel("Years Employed", fontsize=25)
-    plt.ylabel("Frequency Ratio", fontsize=25)
+    plt.ylabel("Frequency", fontsize=25)
     plt.title("Years Employed", fontsize=30)
-    plt.xticks(ticks=[0,1], labels=["[0, 10)","10\+"])
-    plt.savefig("../img/Emp_years_approv.png",dpi=300)
+    plt.xticks(ticks=[0,1], labels=["[0, 10)","10+"], rotation = 0)
+    plt.savefig("../img/Emp_years_approv.png",dpi=300, pad_inches=pad_inches)
     plt.show()
 
 
     figb=new_vec2.value_counts().plot(kind="bar", label="Amount",
         color="blue", alpha=0.5)
     plt.xlabel("Loan Amount",fontsize=25)
-    plt.ylabel("Frequency Ratio",fontsize=25)
+    plt.ylabel("Frequency",fontsize=25)
     plt.title("Loan Amount", fontsize=30)
-    plt.xticks(ticks=[0,1], labels=["(\$0,\$20k)", "\$20k\+"])
-    plt.savefig("../img/Amt_approv.png",dpi=300)
+    plt.xticks(ticks=[0,1], labels=["(\$0,\$20k)", "\$20k+"], rotation = 0)
+    plt.savefig("../img/Amt_approv.png",dpi=300, pad_inches=pad_inches)
     plt.show()
 
 # %%
@@ -383,45 +393,77 @@ if __name__ == '__main__':
     10 or more years of employement history and appicants with 9 or less years of 
     employment history is that there is no difference betweeen their proportion of 
     accepted loans between the groups. My hypothesis is that the group with ten or
-    more years of employment will have more accepted loans than those with less than
-    ten years of employment, on average. 
+    more years of employment will have a statistically different number of 
+    accepted loans than those with less than ten years of employment, on 
+    average. 
     '''
-    bin_means=np,array(bin_means)
-    bin_vars=np.array(bin_vars)
-    counts_list=np,array(counts_list)
+    counts_list=pd.Series(counts_list)
+    probs = pd.Series(probs)
+
+    binom_means=np.array(binom_means)
+    binom_vars=np.array(binom_vars)
+    counts_list=np.array(counts_list)
+
+
+    # Each binomial random variable
+    bnml_emp_lt10 = stats.binom(n=counts_list[0], p=probs[0])
+    bnml_emp_gte10= stats.binom(n=counts_list[1], p=probs[1])
+    bnml_loan_lt20= stats.binom(n=counts_list[2], p=probs[2])
+    bnml_loan_gte20= stats.binom(n=counts_list[3], p=probs[3])
+
+    '''
+    Near as I can tell, I can't do a test of two population proportions 
+    with unequal n in each group with binomial ditributions, which would just be
+    Pa - Pb ~ 0 with summed n. I need to utilize the normal approximation. 
+    To calculate the sample standard error for population proportions, I use 
+    the formula:
+        SE(P) = sqrt(P(1-P)(1/n_a + 1/n_b)) | P = (Pa+Pb) or the total proportion
+    '''
+    def se_two_prop(Ptotal, na, nb):
+        return np.sqrt(Ptotal*(1-Ptotal)*(1/na+1/nb))
+
+    def z_score_prop(best_estimate, Ho, SE):
+        return (best_estimate-Ho)/SE
     
-    rndm = stats.norm()
+    se_emp = se_two_prop(Ptotal = probs[0:1].sum(), na = counts_list[0],
+        nb = counts_list[1])
+    se_loan = se_two_prop(Ptotal = probs[2:3].sum(), na = counts_list[2], 
+        nb = counts_list[3])
+    z_emp = z_score_prop(best_estimate  = probs[0] - probs[1], Ho = 0, 
+        SE = se_emp)
+    z_loan = z_score_prop(best_estimate = probs[2] - probs[3], Ho = 0, 
+        SE = se_loan)
+    p_emp = stats.norm.cdf(x=z_emp, 
+        loc = np.abs(probs[0]*counts_list[0]-probs[1]*counts_list[1]), 
+        scale = se_emp)
+    p_loan = stats.norm.cdf(x=z_loan,
+        loc = np.abs(probs[2]*counts_list[2] - probs[3]*counts_list[3]), 
+        scale = se_loan)
+    stringz = f'''
+    "The z-test statistic for Employment Years is : {z_emp}, with a p-value of 
+    {p_emp}.
+    
+    The z-test statistic for Loan Amount is : {z_loan}, with a p-value of 
+    {p_loan}.
+    '''
+
+    print(stringz)
+
+
     t_score0, p0 = stats.ttest_ind(Emp_lty, Emp_gtey, equal_var=False, 
     nan_policy="omit")
-    print(t_score0, p0)
-    string1=f'''
-    The p-value of 0.0 for the difference in proportions given unknown variance
-    of is smaller than the critical value of 0.01, so we reject the null
-    hypothesis that the proportions of approved loans between lendees with an
-    employement history of 10+ years is the same as those with an employemnt 
-    history of less than 10 years in favor of the hypothesis that the groups are
-    different. Specifically, those with less than 10 years of employment history
-    who applied for loans recieved approval significanlty more often than those
-    with 10 or more years of work history.
-    '''
-    print(string1)
- 
-# %%
-    
+
     t_score, p = stats.ttest_ind(LoanReq_ltk, LoanReq_gtek, equal_var=False, 
         nan_policy="omit")
-    print(t_score, p)
 
-    string = f'''
-    The p-value of 0.0 for the difference in proportions given unknown variance
-    is smaller than the critical value of 0.01, so we reject the null
-    hypothesis that the proportions of approved loans between lendees who 
-    applied for $20k or more of funding, compared to those who applied for less
-    than $20k of funding in favor of the hypothesis that the grouops are 
-    different. Specifically, those who applied for less than $20k in funding 
-    received approval significantly more often.
+    string1=f'''
+    The t-test statistic for Employment Years is {t_score0}, with a p-value of 
+    {p0}. 
+
+    The t-test statistic for Loan Amount is {t_score}, with a p-value of {p}.
     '''
-    print(string)
+    print(string1)
+
 
 #%%
 
