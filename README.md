@@ -85,7 +85,14 @@ These particular cutoffs may be useful as features in machine learning models do
 
 Feedback recieved about this analysis include the following:
   - The appropriate test is an approximate test of differences in population proportions, being the z-test. In response I show that the results of the t-test and the z-test are nearly equivalent for these data, which supports the findings regardless of which test is used. However, it wouldn't hurt to further use a more conservative adjustment to the degrees of freedom given the imbalance between the groups.
-  - There was a question during a presentation about the axes of figure 3 & 4, to which I incorrectly responded that the graphs were scaled. The observer correctly noticed that the scaling must be off then. The scaling I referred to was from older code that I abandoned and then forgot that fact. The axes on figures 3 and 4 are not scaled but raw proportions in **1e6 units**. The units were auto chosen by the grapher. The units are printed above the axis, albiet obveously difficult to see otherwise there would have been no reason for the question. I have played around with fontsize, however, I have not been successful.
-  -  The plot titles and axis labels were partially cut off in the original plots. I have found a workaround that configures the `plot.savefig()`.
 
-For an update and formal responses to critical feedback, with data, see the [**slide deck**](), and [**updated code**](). 
+  - There was a question during a presentation about the axes of figure 3 & 4. The axes on figures 3 and 4 are not scaled but raw proportions in **1e6 units**. The units were auto chosen by the grapher. The units are printed above the axis, albiet obveously difficult to see otherwise there would have been no reason for the question. I have played around with fontsize, however, I have not been successful at changing it.
+
+  -  The plot titles and axis labels were partially cut off in the original plots. I have found a workaround. 
+
+```python
+from matplotlib import rcParams
+rcParams.update({'figure.autolayout': True})
+```
+
+For an update and formal responses to feedback, with data, and a list of feedback not yet responded to, see the [**slide deck**](https://drive.google.com/file/d/1gTp1lBJXs_ssyDink_Gs2xkSGcCAPePc/view?usp=sharing). 
